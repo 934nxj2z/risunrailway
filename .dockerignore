@@ -1,0 +1,36 @@
+# Only files the image build actually consumes are sent to the daemon.
+# `!` rules re-include, so this is a deny-then-allow list.
+*
+!Dockerfile
+!docker-entrypoint.sh
+!.env.railway
+!package.json
+!bun.lock
+!tsconfig.json
+!src
+!scripts
+!migrations
+!dashboard
+
+# Never ship local secrets, caches, or build output. `.env.railway` is the
+# intentionally-public fallback for standalone deploys, so it is not matched here.
+.env
+.env.local
+.env.*.local
+node_modules
+node_modules/**
+dist
+**/node_modules
+**/node_modules/**
+**/dist
+**/*.test.ts
+.git
+.git/**
+.gitignore
+.gitattributes
+README.md
+DEPLOY.md
+docker-compose.yml
+railway.json
+.railway
+docker-compose.test.yml

@@ -1,0 +1,19 @@
+# Line endings are load-bearing here: the container entrypoint is `sh` and the
+# Dockerfile RUN steps invoke it. A CRLF checkout (the default on Windows) makes
+# the kernel look for a `sh` interpreter named `sh\r` and every boot fails with
+# "no such file or directory". Upstream enforces the same rule.
+* text=auto eol=lf
+
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+.env.railway text eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.zip binary

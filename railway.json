@@ -1,0 +1,21 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile",
+    "watchPatterns": [
+      "Dockerfile",
+      "docker-entrypoint.sh",
+      "railway.json",
+      ".dockerignore",
+      "DEPLOY.md"
+    ]
+  },
+  "deploy": {
+    "healthcheckPath": "/health/ready",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ALWAYS",
+    "numReplicas": 1,
+    "drainingSeconds": 40
+  }
+}

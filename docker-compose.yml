@@ -1,0 +1,35 @@
+# Local Docker test of this template. Railway does not read this file; it exists
+# so you can reproduce the deploy before pushing.
+#
+# An env file is required (upstream's Compose pattern): copy the example and put a
+# real key in it, because the image's own fallback is a deliberately unusable
+# placeholder.
+#
+#   cp .env.example .env
+#   openssl rand -hex 32        # paste the output as CARTETHYIA_ENCRYPTION_KEY
+#   docker compose up --build -d
+#   curl -s http://127.0.0.1:12800/health/ready
+#
+# Anything set in `environment:` below wins over .env. A different env file:
+#   CARTETHYIA_ENV_FILE=.env.production docker compose up --build -d
+services:
+  cartethyia:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cartethyia-railway:local
+    env_file:
+      - ${CARTETHYIA_ENV_FILE:-.env}
+    ports:
+      - "12800:12800"
+    environment:
+      CARTETHYIA_DB_MODE: lite
+      # Without the Railway edge in front, forwarded headers must not be trusted.
+      TRUSTED_PROXY_CIDRS: ""
+    volumes:
+      # Same layout as the Railway volume mount.
+      - cartethyia-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  cartethyia-data:
